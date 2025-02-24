@@ -6,10 +6,6 @@ jobs:
       matrix:
         arm32v6:
           DOCKER_ARCH: arm32v6
-        arm64v8:
-          DOCKER_ARCH: arm64v8
-        amd64:
-          DOCKER_ARCH: amd64
     # The default timeout of 60 minutes is a little low for compiling
     # cryptography on ARM architectures.
     timeoutInMinutes: 180
