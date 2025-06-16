@@ -372,8 +372,11 @@ def should_autorenew(config: configuration.NamespaceConfig,
         # Don't initialize the acme client (making a network request) until
         # we know we're actually going to have to check ARI
         if config.server not in acme_clients:
-            acme_clients[config.server] = client.acme_from_config_key(config)
-        acme = acme_clients[config.server]
+            try:
+                acme_clients[config.server] = client.acme_from_config_key(config)
+            except: # todo catch specific error
+                # Memoize the failure to fetch the directory so we don't retry.
+                acme_clients[config.server] = None
 
         cert = lineage.version("cert", lineage.latest_common_version())
 
@@ -381,7 +384,10 @@ def should_autorenew(config: configuration.NamespaceConfig,
         renewal_time = None
         with open(cert, 'rb') as f:
             cert_pem = f.read()
-        renewal_time, _ = acme.renewal_time(cert_pem)
+
+        acme = acme_clients[config.server]
+        if acme:
+            renewal_time, _ = acme.renewal_time(cert_pem)
 
         now = datetime.datetime.now(datetime.timezone.utc)
 
