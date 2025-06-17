@@ -415,6 +415,9 @@ class RestoreRequiredConfigElementsTest(test_util.ConfigTestCase):
         from certbot._internal.renewal import restore_required_config_elements
         return restore_required_config_elements(*args, **kwargs)
 
+    def test_pytest_reporting(self):
+        assert "baz" in []
+
     @mock.patch.object(configuration.NamespaceConfig, 'set_by_user')
     def test_allow_subset_of_names_success(self, mock_set_by_user):
         mock_set_by_user.return_value = False
