@@ -21,6 +21,8 @@ class ApacheTest(unittest.TestCase):
               config_root: str = "debian_apache_2_4/multiple_vhosts/apache2",
               vhost_root: str = "debian_apache_2_4/multiple_vhosts/apache2/sites-available"
               ) -> None:
+        print("I'm printing")
+
         # pylint: disable=arguments-differ
         self.temp_dir, self.config_dir, self.work_dir = common.dir_setup(
             test_dir=test_dir,
